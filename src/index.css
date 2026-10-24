@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+
+  /* Warm cream backgrounds */
+  --color-cream-50: #fcfaf5;
+  --color-cream-100: #f6f1e7;
+
+  /* Soft beige / sand neutrals */
+  --color-sand-200: #e9e1d0;
+  --color-sand-300: #d9cfba;
+  --color-sand-400: #bfb294;
+
+  /* Text */
+  --color-ink-900: #2b2f2a;
+  --color-ink-700: #4a4f48;
+  --color-ink-500: #666b63;
+
+  /* Sage green primary accent */
+  --color-sage-50: #f2f6f2;
+  --color-sage-100: #e1ebe2;
+  --color-sage-200: #c6d8c9;
+  --color-sage-400: #8fb097;
+  --color-sage-600: #5a7c63;
+  --color-sage-700: #4a6650;
+  --color-sage-800: #3b5240;
+
+  /* Muted warm accent for "in progress" */
+  --color-honey-400: #d4aa62;
+
+  /* Soft terracotta for errors and destructive actions */
+  --color-clay-50: #fbf1ee;
+  --color-clay-600: #a8543f;
+  --color-clay-700: #8f4532;
+}
+
+@layer base {
+  body {
+    @apply bg-cream-50 font-sans text-ink-900 antialiased;
+  }
+
+  /* Prevent the page behind an open modal from scrolling */
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sage-600);
+    outline-offset: 2px;
+  }
+}
