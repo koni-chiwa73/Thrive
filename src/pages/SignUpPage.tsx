@@ -2,6 +2,7 @@ import { useId, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import AuthLayout from '../components/auth/AuthLayout'
+import CheckEmailNotice from '../components/auth/CheckEmailNotice'
 import GoogleButton from '../components/auth/GoogleButton'
 import Button from '../components/ui/Button'
 import FormField from '../components/ui/FormField'
@@ -80,30 +81,7 @@ export default function SignUpPage() {
     }
   }
 
-  if (sentTo) {
-    return (
-      <AuthLayout
-        title="Check your email"
-        footer={
-          <Link to="/sign-in" className={linkClasses}>
-            Back to sign in
-          </Link>
-        }
-      >
-        <div role="status" className="space-y-3 text-sm text-ink-700">
-          <p>
-            We've sent a confirmation link to{' '}
-            <span className="break-all font-medium text-ink-900">{sentTo}</span>.
-            Open it to finish creating your account.
-          </p>
-          <p>
-            It can take a minute, and it may land in your spam folder. If you
-            already have an account with this email, you can sign in instead.
-          </p>
-        </div>
-      </AuthLayout>
-    )
-  }
+  if (sentTo) return <CheckEmailNotice email={sentTo} />
 
   return (
     <AuthLayout

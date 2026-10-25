@@ -1,5 +1,6 @@
 import { useId, useState } from 'react'
 import type { FormEvent } from 'react'
+import { getErrorMessage } from '../../services/errors'
 import { GOAL_CATEGORIES } from '../../types/goal'
 import type { Goal, GoalInput } from '../../types/goal'
 import {
@@ -19,6 +20,7 @@ import type {
 } from '../../utils/goalForm'
 import Button from '../ui/Button'
 import FormField from '../ui/FormField'
+import RadioChips from '../ui/RadioChips'
 import { controlClasses } from '../ui/styles'
 
 interface GoalFormProps {
@@ -72,8 +74,10 @@ export default function GoalForm({ goal, onSubmit, onCancel }: GoalFormProps) {
     setIsSubmitting(true)
     try {
       await onSubmit(result.input)
-    } catch {
-      setSubmitError("We couldn't save your goal. Please try again.")
+    } catch (caught) {
+      setSubmitError(
+        getErrorMessage(caught, "We couldn't save your goal. Please try again."),
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -146,23 +150,12 @@ export default function GoalForm({ goal, onSubmit, onCancel }: GoalFormProps) {
         <legend className="mb-1.5 text-sm font-medium text-ink-900">
           Target <span className="font-normal text-ink-500">(optional)</span>
         </legend>
-        <div className="flex flex-wrap gap-2">
-          {TARGET_OPTIONS.map((option) => (
-            <label key={option.value} className="relative">
-              <input
-                type="radio"
-                name={`${idPrefix}-targetType`}
-                value={option.value}
-                checked={values.targetType === option.value}
-                onChange={() => update('targetType', option.value)}
-                className="peer sr-only"
-              />
-              <span className="inline-flex cursor-pointer rounded-full border border-sand-300 bg-white px-3.5 py-1.5 text-sm text-ink-700 transition-colors hover:bg-cream-100 peer-checked:border-sage-600 peer-checked:bg-sage-50 peer-checked:font-medium peer-checked:text-sage-800 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-sage-600">
-                {option.label}
-              </span>
-            </label>
-          ))}
-        </div>
+        <RadioChips
+          name={`${idPrefix}-targetType`}
+          options={TARGET_OPTIONS}
+          value={values.targetType}
+          onChange={(targetType) => update('targetType', targetType)}
+        />
 
         {values.targetType === 'date' && (
           <div className="mt-3">

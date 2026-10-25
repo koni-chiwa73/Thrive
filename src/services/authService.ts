@@ -92,6 +92,16 @@ export const authService = {
     if (error) throw toFriendlyError(error)
   },
 
+ /** Sends the sign-up confirmation email again. */
+  async resendConfirmation(email: string): Promise<void> {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: { emailRedirectTo: appUrl('/auth/callback') },
+    })
+    if (error) throw toFriendlyError(error)
+  },
+
   /** Ends the session on this device only. */
   async signOut(): Promise<void> {
     const { error } = await supabase.auth.signOut({ scope: 'local' })
